@@ -1,0 +1,412 @@
+﻿    local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/xHeptc/Kavo-UI-Library/main/source.lua"))()
+    local Window = Library.CreateLib("์NIGTH X HUB", "DarkTheme")
+
+    local Tab = Window:NewTab("Script ADMIN/TELEPORT")
+    local Section = Tab:NewSection("⇩ SCRIPT")
+    --
+    Section:NewButton("Infinite Yield Admin", "คนเขียนโครตหล่อ", function()
+        loadstring(game:HttpGet('https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source'))()
+    end)
+    --
+	Section:NewButton("Dex/ดัดแปรงเกม", "คนเขียนโครตหล่อ", function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/infyiff/backup/main/dex.lua"))()
+    end)
+	--
+    Section:NewButton("Simple Spy", "คนเขียนโครตหล่อ", function()
+        loadstring(game:HttpGetAsync("https://raw.githubusercontent.com/78n/SimpleSpy/main/SimpleSpyBeta.lua"))()
+    end)
+    --
+    Section:NewButton("Ghost Hub", "คนเขียนโครตหล่อ", function()
+        loadstring(game:HttpGet('https://raw.githubusercontent.com/GhostPlayer352/Test4/main/GhostHub'))()
+    end)
+    --
+    Section:NewButton("Teleprot goto player/วาปหาผู้เล่น", "ไม่สามารถปิดแทบได้", function()
+        local Players = game:GetService("Players")
+local UIS = game:GetService("UserInputService")
+local LocalPlayer = Players.LocalPlayer
+
+-- 📦 GUI
+local screenGui = Instance.new("ScreenGui")
+screenGui.Name = "TeleportGui"
+screenGui.ResetOnSpawn = false
+screenGui.Parent = LocalPlayer:WaitForChild("PlayerGui")
+
+-- 🔘 ปุ่มเปิด/ปิด GUI
+local toggleButton = Instance.new("TextButton")
+toggleButton.Name = "ToggleButton"
+toggleButton.Size = UDim2.new(0, 120, 0, 30)
+toggleButton.Position = UDim2.new(0, 10, 0, 10)
+toggleButton.Text = "เปิด/ปิด GUI"
+toggleButton.BackgroundColor3 = Color3.fromRGB(0, 170, 255)
+toggleButton.TextColor3 = Color3.new(1, 1, 1)
+toggleButton.Font = Enum.Font.SourceSansBold
+toggleButton.TextSize = 18
+toggleButton.Parent = screenGui
+
+-- 🪟 เฟรมหลัก
+local mainFrame = Instance.new("Frame")
+mainFrame.Name = "MainFrame"
+mainFrame.Size = UDim2.new(0, 300, 0, 160)
+mainFrame.Position = UDim2.new(0, 10, 0, 50)
+mainFrame.BackgroundColor3 = Color3.fromRGB(245, 245, 245)
+mainFrame.BorderSizePixel = 0
+mainFrame.Visible = false
+mainFrame.Parent = screenGui
+
+-- 🏷️ Title Bar (ลากได้)
+local titleBar = Instance.new("Frame")
+titleBar.Name = "TitleBar"
+titleBar.Size = UDim2.new(1, 0, 0, 30)
+titleBar.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
+titleBar.Parent = mainFrame
+
+local titleText = Instance.new("TextLabel")
+titleText.Text = "วาร์ปไปหาผู้เล่น"
+titleText.Size = UDim2.new(1, 0, 1, 0)
+titleText.BackgroundTransparency = 1
+titleText.TextColor3 = Color3.new(1, 1, 1)
+titleText.Font = Enum.Font.SourceSansBold
+titleText.TextSize = 20
+titleText.Parent = titleBar
+
+-- ✏️ กล่องกรอกชื่อ
+local nameBox = Instance.new("TextBox")
+nameBox.PlaceholderText = "กรอกบางส่วนของชื่อเล่น (Display Name)"
+nameBox.Size = UDim2.new(0, 260, 0, 30)
+nameBox.Position = UDim2.new(0, 20, 0, 50)
+nameBox.Text = ""
+nameBox.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+nameBox.TextColor3 = Color3.new(0, 0, 0)
+nameBox.Font = Enum.Font.SourceSans
+nameBox.TextSize = 18
+nameBox.Parent = mainFrame
+
+-- 🚀 ปุ่มวาร์ป
+local teleportButton = Instance.new("TextButton")
+teleportButton.Text = "วาร์ปไปหา!"
+teleportButton.Size = UDim2.new(0, 260, 0, 30)
+teleportButton.Position = UDim2.new(0, 20, 0, 100)
+teleportButton.BackgroundColor3 = Color3.fromRGB(80, 200, 120)
+teleportButton.TextColor3 = Color3.new(1, 1, 1)
+teleportButton.Font = Enum.Font.SourceSansBold
+teleportButton.TextSize = 18
+teleportButton.Parent = mainFrame
+
+-- ⚙️ ระบบเปิด/ปิด GUI
+toggleButton.MouseButton1Click:Connect(function()
+	mainFrame.Visible = not mainFrame.Visible
+end)
+
+-- 🧠 ฟังก์ชันวาร์ป (ค้นหาชื่อบางส่วน)
+local function teleportToPlayer(partialName)
+	partialName = partialName:lower()
+
+	for _, targetPlayer in ipairs(Players:GetPlayers()) do
+		local displayName = targetPlayer.DisplayName:lower()
+		if string.find(displayName, partialName, 1, true) then
+			if targetPlayer.Character and targetPlayer.Character:FindFirstChild("HumanoidRootPart") then
+				local targetPos = targetPlayer.Character.HumanoidRootPart.Position
+				if LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+					LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(targetPos + Vector3.new(0, 5, 0))
+					print("วาร์ปไปหา " .. targetPlayer.DisplayName)
+					return
+				else
+					warn("ไม่พบตัวละครของคุณ")
+					return
+				end
+			end
+		end
+	end
+	warn("ไม่พบผู้เล่นที่มีชื่อบางส่วนว่า '" .. partialName .. "'")
+end
+
+-- 🔘 กดปุ่มเพื่อวาร์ป
+teleportButton.MouseButton1Click:Connect(function()
+	local input = nameBox.Text
+	if input and input ~= "" then
+		teleportToPlayer(input)
+	end
+end)
+
+-- 🎯 ระบบลาก GUI ด้วย TitleBar
+local dragging = false
+local dragStart, startPos
+local dragInput
+
+titleBar.InputBegan:Connect(function(input)
+	if input.UserInputType == Enum.UserInputType.MouseButton1 then
+		dragging = true
+		dragStart = input.Position
+		startPos = mainFrame.Position
+
+		input.Changed:Connect(function()
+			if input.UserInputState == Enum.UserInputState.End then
+				dragging = false
+			end
+		end)
+	end
+end)
+
+titleBar.InputChanged:Connect(function(input)
+	if input.UserInputType == Enum.UserInputType.MouseMovement then
+		dragInput = input
+	end
+end)
+
+UIS.InputChanged:Connect(function(input)
+	if input == dragInput and dragging then
+		local delta = input.Position - dragStart
+		mainFrame.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X,
+			startPos.Y.Scale, startPos.Y.Offset + delta.Y)
+	end
+end)
+
+    end)
+    --
+    Section:NewButton("Mobile keyboard/คีย์บอร์ดสำหรับมือถือ", "คนเขียนโครตหล่อ", function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/advxzivhsjjdhxhsidifvsh/mobkeyboard/main/main.txt", true))()
+end)
+    --
+        Section:NewButton("invisible/ล่องหน", "อาจจะใช้ได้แค่บางแมพ", function()
+        loadstring(game:HttpGet('https://pastebin.com/raw/3Rnd9rHf'))()
+end)
+     --
+    local Tab = Window:NewTab("Esp")
+    local Section = Tab:NewSection("⇩ SCRIPT")
+    --
+    Section:NewToggle("Esp Name By NIGTH X HUB/Esp แค่ชื่อบนหัว", "คนเขียนโครตหล่อ", function(state)
+        if state then
+            local Players = game:GetService("Players")
+    local LocalPlayer = Players.LocalPlayer
+
+    for i, v in pairs(Players:GetPlayers()) do
+        if v ~= LocalPlayer and v.Character and v.Character:FindFirstChild("Head") then
+            local head = v.Character.Head
+            if not head:FindFirstChild("ESP") then
+                local BillboardGui = Instance.new("BillboardGui")
+                local TextLabel = Instance.new("TextLabel")
+
+                BillboardGui.Name = "ESP"
+                BillboardGui.Parent = head
+                BillboardGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+                BillboardGui.AlwaysOnTop = true
+                BillboardGui.Size = UDim2.new(0, 200, 0, 60)
+                BillboardGui.StudsOffset = Vector3.new(0, 2.5, 0)
+
+                TextLabel.Parent = BillboardGui
+                TextLabel.BackgroundTransparency = 1
+                TextLabel.Size = UDim2.new(1, 0, 1, 0)
+                TextLabel.Font = Enum.Font.GothamBold
+                TextLabel.Text = v.Name
+                TextLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+                TextLabel.TextSize = 22
+                TextLabel.TextStrokeTransparency = 0
+                TextLabel.TextWrapped = true
+            end
+        end
+    end
+    --
+        else
+            local Players = game:GetService("Players")
+    local LocalPlayer = Players.LocalPlayer
+
+    for i, v in pairs(Players:GetPlayers()) do
+        if v ~= LocalPlayer and v.Character and v.Character:FindFirstChild("Head") then
+            local esp = v.Character.Head:FindFirstChild("ESP")
+            if esp then
+                esp:Destroy()
+            end
+        end
+    end
+    --
+        end
+    end)
+    --
+local espThread = nil -- ควบคุม loop
+
+Section:NewToggle("ESP Body/ร่างกายเรืองแสง", "ToggleInfo", function(state)
+    if state then
+        _G.ESP = true
+
+        if not espThread then
+            espThread = task.spawn(function()
+                while _G.ESP do
+                    task.wait(0.1)
+                    pcall(function()
+                        for _, v in pairs(game.Players:GetPlayers()) do
+                            if v ~= game.Players.LocalPlayer then
+                                local Char = v.Character
+                                if Char and Char:FindFirstChild("HumanoidRootPart") then
+                                    if not Char:FindFirstChild("ESP") and _G.ESP then -- เช็คซ้ำว่า toggle ยังเปิด
+                                        local hl = Instance.new("Highlight")
+                                        hl.Name = "ESP"
+                                        hl.FillColor = Color3.new(1, 0, 0)
+                                        hl.OutlineColor = Color3.new(1, 0, 0)
+                                        hl.Adornee = Char
+                                        hl.Parent = Char
+                                    end
+                                end
+                            end
+                        end
+                    end)
+                end
+                espThread = nil -- reset เมื่อหยุด
+            end)
+        end
+
+    else
+        _G.ESP = false
+
+        -- ลบ ESP ทั้งหมดออก
+        for _, v in pairs(game.Players:GetPlayers()) do
+            if v ~= game.Players.LocalPlayer then
+                local Char = v.Character
+                if Char and Char:FindFirstChild("ESP") then
+                    Char:FindFirstChild("ESP"):Destroy()
+                end
+            end
+        end
+    end
+end)
+--
+    Section:NewButton("Esp สำหรับคนไทย", "ปิดGuiนี้ไม่ได้ต้องออกเกมเข้าใหม่เท่านั้น", function()
+        local Players = game:GetService("Players")
+    local LocalPlayer = Players.LocalPlayer
+
+    -- สร้างปุ่ม GUI
+    local screenGui = Instance.new("ScreenGui", LocalPlayer:WaitForChild("PlayerGui"))
+    screenGui.Name = "ESP_GUI"
+
+    local toggleButton = Instance.new("TextButton", screenGui)
+    toggleButton.Size = UDim2.new(0, 120, 0, 40)
+    toggleButton.Position = UDim2.new(0, 10, 0, 10)
+    toggleButton.Text = "เปิด ESP"
+    toggleButton.BackgroundColor3 = Color3.fromRGB(50, 150, 255)
+    toggleButton.TextColor3 = Color3.new(1,1,1)
+    toggleButton.Font = Enum.Font.GothamBold
+    toggleButton.TextSize = 18
+    toggleButton.TextWrapped = true
+    toggleButton.BorderSizePixel = 0
+    toggleButton.BackgroundTransparency = 0.2
+
+    -- ตัวแปรสถานะ
+    local espEnabled = false
+
+    -- ฟังก์ชันแสดง/ซ่อน ESP
+    local function updateESP()
+        for i, v in pairs(Players:GetPlayers()) do
+            if v ~= LocalPlayer and v.Character and v.Character:FindFirstChild("Head") then
+                local head = v.Character.Head
+                local existing = head:FindFirstChild("ESP")
+
+                if espEnabled then
+                    if not existing then
+                        local BillboardGui = Instance.new("BillboardGui")
+                        local TextLabel = Instance.new("TextLabel")
+                        
+                        BillboardGui.Parent = head
+                        BillboardGui.Name = "ESP"
+                        BillboardGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+                        BillboardGui.AlwaysOnTop = true
+                        BillboardGui.Size = UDim2.new(0, 200, 0, 60)
+                        BillboardGui.StudsOffset = Vector3.new(0, 2.5, 0)
+                        
+                        TextLabel.Parent = BillboardGui
+                        TextLabel.BackgroundTransparency = 1.0
+                        TextLabel.Size = UDim2.new(1, 0, 1, 0)
+                        TextLabel.Font = Enum.Font.GothamBold
+                        TextLabel.Text = v.Name
+                        TextLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+                        TextLabel.TextSize = 22
+                        TextLabel.TextStrokeTransparency = 0
+                        TextLabel.TextWrapped = true
+                    end
+                else
+                    if existing then
+                        existing:Destroy()
+                    end
+                end
+            end
+        end
+    end
+
+    -- ปุ่มกดเปิด/ปิด
+    toggleButton.MouseButton1Click:Connect(function()
+        espEnabled = not espEnabled
+        toggleButton.Text = espEnabled and "ปิด ESP" or "เปิด ESP"
+        updateESP()
+    end)
+    -- อัปเดต ESP ทุก 2 วินาที (สำหรับผู้เล่นใหม่หรือเกิดใหม่)
+    while true do
+        wait(2)
+        if espEnabled then
+            updateESP()
+        end
+    end
+    --
+    end)
+    --
+_G.ESPColor = Color3.fromRGB(255, 255, 255)
+
+local Players = game:GetService("Players")
+local LocalPlayer = Players.LocalPlayer
+
+function updateESP()
+    for i, v in pairs(Players:GetPlayers()) do
+        if v ~= LocalPlayer and v.Character and v.Character:FindFirstChild("Head") then
+            local head = v.Character.Head
+            local existing = head:FindFirstChild("ESP")
+            
+            if existing and existing:FindFirstChildOfClass("TextLabel") then
+                existing:FindFirstChildOfClass("TextLabel").TextColor3 = _G.ESPColor
+            end
+        end
+    end
+end
+
+Section:NewColorPicker("Esp Color/สี Esp", "เลือกสีสำหรับชื่อ ESP", _G.ESPColor, function(color)
+    _G.ESPColor = color
+    updateESP()
+end)
+--
+Section:NewButton("AIMBOT Owl", "คนเขียนโครตหล่อ", function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/CriShoux/OwlHub/master/OwlHub.txt"))();
+    end)
+--
+local Tab = Window:NewTab("Tap 18+🔞 FOR MEN")
+local Section = Tab:NewSection("SCRIPT ⇓")
+--
+Section:NewButton("JERK OFF R6", "คนเขียนโครตเซียน", function()
+    loadstring(game:HttpGet("https://pastefy.app/wa3v2Vgm/raw"))()
+end)
+--
+Section:NewButton("JERK OFF R15", "คนเขียนโครตเซียน", function()
+    loadstring(game:HttpGet("https://pastefy.app/YZoglOyJ/raw"))()
+end)
+--
+local Tab = Window:NewTab("Setting")
+local Section = Tab:NewSection("Setting ⇣")
+--
+Section:NewKeybind("KeybindText", "KeybindInfo", Enum.KeyCode.F, function()
+	Library:ToggleUI()
+end)
+--
+local Tab = Window:NewTab("Credit/เครดิต")
+local Section = Tab:NewSection("ขอบคุณที่ใช้ NIGTH X HUB")
+--
+Section:NewLabel("==========")
+--
+Section:NewLabel("สร้างโดย NIGTH/ไนท์")
+--
+Section:NewButton("Discord/ดิสคอร์ด", "คัดลอกไปยังคลิปบอร์ด", function()
+    setclipboard("https://discord.gg/eJWaGfhSrv")
+end)
+--
+Section:NewButton("Youtube/ยูทูป", "คัดลอกไปยังคลิปบอร์ด", function()
+    setclipboard("https://www.youtube.com/@Welcome_NIGTH")
+end)
+--
+Section:NewLabel("ขอบคุณที่ใช้สคิปสำหรับTestของผมนะครับ")
+--
+Section:NewLabel("==========")
+--
